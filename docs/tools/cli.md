@@ -1,21 +1,18 @@
-# tscircuit CLI (`tsci`)
+# tscircuit CLI
 
-The **tscircuit CLI** is the primary developer tool for working with tscircuit projects locally. It provides commands for creating projects, running a live-reloading development server, building production artifacts, and exporting circuits to various formats.
+**Repository:** [tscircuit/cli](https://github.com/tscircuit/cli)  
+**npm:** [`@tscircuit/cli`](https://www.npmjs.com/package/@tscircuit/cli)
 
-- **Package:** `@tscircuit/cli`
-- **npm:** https://www.npmjs.com/package/@tscircuit/cli
-- **GitHub:** https://github.com/tscircuit/cli
-
----
+The tscircuit CLI (`tsci`) is the primary tool for local circuit development. It handles project scaffolding, provides a live-reloading development server, and can export your designs to production-ready formats.
 
 ## Installation
 
 ```bash
-# Global install (recommended)
 npm install -g @tscircuit/cli
-
-# Or use it directly with npx
-npx @tscircuit/cli <command>
+# or
+yarn global add @tscircuit/cli
+# or
+bun add -g @tscircuit/cli
 ```
 
 Verify the installation:
@@ -24,190 +21,160 @@ Verify the installation:
 tsci --version
 ```
 
----
+## Quick Start
+
+```bash
+# 1. Create a new project
+tsci init my-first-pcb
+cd my-first-pcb
+
+# 2. Start the dev server
+tsci dev
+```
+
+Opening `http://localhost:3020` shows a live PCB + schematic preview that refreshes every time you save a file.
 
 ## Commands
 
-### `tsci init`
+### `tsci init [project-name]`
 
-Scaffold a new tscircuit project.
-
-```bash
-tsci init [project-name]
-```
-
-This creates a new directory with a starter project including:
-- A sample circuit component
-- `package.json` with tscircuit dependencies
-- TypeScript configuration
-- Basic project structure
-
-**Options:**
-
-| Flag | Description |
-|------|-------------|
-| `--template <name>` | Use a specific starter template (e.g. `blank`, `resistor-divider`) |
-
----
-
-### `tsci dev`
-
-Start a local development server with hot-reloading. The server watches your source files and automatically re-renders the PCB and schematic views whenever you save.
+Scaffolds a new tscircuit project in the given directory (or the current directory if no name is provided).
 
 ```bash
-tsci dev [entry-file]
+tsci init my-circuit
 ```
 
-Defaults to `index.tsx` in the current directory. Opens a browser window at `http://localhost:3000` showing your circuit in an interactive viewer.
-
-**Options:**
-
-| Flag | Description |
-|------|-------------|
-| `--port <number>` | Port to listen on (default: `3000`) |
-| `--no-open` | Do not automatically open the browser |
-
----
-
-### `tsci build`
-
-Compile your circuit and produce circuit JSON output.
-
-```bash
-tsci build [entry-file]
-```
-
-**Options:**
-
-| Flag | Description |
-|------|-------------|
-| `--outdir <dir>` | Output directory (default: `./dist`) |
-
----
-
-### `tsci export`
-
-Export your circuit to a specific format.
-
-```bash
-tsci export [entry-file] --format <format>
-```
-
-**Supported formats:**
-
-| Format | Flag value | Description |
-|--------|-----------|-------------|
-| Gerber | `gerber` | Production files for PCB manufacturers |
-| SVG | `svg` | Vector graphic of the schematic or PCB |
-| KiCad | `kicad` | `.kicad_pcb` file for KiCad |
-| Circuit JSON | `circuit-json` | Raw tscircuit circuit JSON |
-
-**Example:**
-
-```bash
-tsci export index.tsx --format gerber --outdir ./gerbers
-```
-
----
-
-### `tsci add`
-
-Add a component from the tscircuit registry to your project.
-
-```bash
-tsci add <component-name>
-```
-
-**Example:**
-
-```bash
-tsci add @tsci/arduino-uno
-```
-
----
-
-### `tsci login` / `tsci logout`
-
-Authenticate with the tscircuit cloud services (required for features such as cloud autorouting and the snippet registry).
-
-```bash
-tsci login
-tsci logout
-```
-
----
-
-## Project Structure
-
-After running `tsci init`, a typical project looks like this:
+**Generated file structure:**
 
 ```
 my-circuit/
 ├── index.tsx          # Main circuit entry point
 ├── package.json
-├── tsconfig.json
-└── node_modules/
+└── tsconfig.json
 ```
 
-Your main entry file exports a default React component that represents your circuit:
+**`index.tsx` template:**
 
 ```tsx
-import { Board, Resistor, Capacitor, Trace } from "@tscircuit/core"
+import { Circuit } from "@tscircuit/core"
 
-export default function MyCircuit() {
-  return (
-    <Board width="100mm" height="80mm">
-      <Resistor
-        name="R1"
-        resistance="10kohm"
-        footprint="0402"
-        pcbX={0}
-        pcbY={0}
-      />
-      <Capacitor
-        name="C1"
-        capacitance="100nF"
-        footprint="0402"
-        pcbX={5}
-        pcbY={0}
-      />
-      <Trace from=".R1 .pin2" to=".C1 .pin1" />
-    </Board>
-  )
-}
+export default () => (
+  <board width="20mm" height="20mm">
+    {/* Add components here */}
+  </board>
+)
+```
+
+---
+
+### `tsci dev`
+
+Starts a live-reloading development server.
+
+```bash
+tsci dev
+# Server running at http://localhost:3020
+```
+
+**Options:**
+
+| Flag | Default | Description |
+|------|---------|-------------|
+| `--port` | `3020` | Port to listen on |
+| `--file` | `index.tsx` | Entry file to render |
+
+```bash
+tsci dev --port 4000 --file src/my-board.tsx
+```
+
+The dev server watches your source files, re-runs the circuit, and pushes updates to the browser via WebSocket — no page reload required.
+
+---
+
+### `tsci export`
+
+Exports your circuit to a specified format.
+
+```bash
+tsci export --format <format> [options]
+```
+
+**Supported formats:**
+
+| Format | Flag | Output |
+|--------|------|--------|
+| Gerber | `--format gerber` | ZIP of Gerber/Excellon files |
+| SVG | `--format svg` | PCB and/or schematic SVG |
+| PNG | `--format png` | PCB raster image |
+| KiCad PCB | `--format kicad` | `.kicad_pcb` file |
+
+**Examples:**
+
+```bash
+# Export Gerber files for manufacturing
+tsci export --format gerber --output ./gerbers
+
+# Export a PCB preview SVG
+tsci export --format svg --output my-board.svg
+
+# Export schematic SVG
+tsci export --format svg --view schematic --output my-schematic.svg
+
+# Export PNG thumbnail
+tsci export --format png --output preview.png
+```
+
+---
+
+### `tsci add <package>`
+
+Installs a tscircuit component package from the registry.
+
+```bash
+tsci add @tsci/seveibar.smd-led
+```
+
+This adds the package to your `package.json` and makes it available as a JSX import.
+
+---
+
+### `tsci build`
+
+Builds the project without starting a server. Useful for CI pipelines.
+
+```bash
+tsci build
 ```
 
 ---
 
 ## Configuration
 
-You can place a `tscircuit.config.ts` (or `.js`) file at the root of your project to customise CLI behaviour:
+Projects can be configured via a `tscircuit.config.ts` (or `.json`) file in the project root:
 
 ```ts
 // tscircuit.config.ts
-import { defineConfig } from "@tscircuit/cli"
-
-export default defineConfig({
-  entry: "src/index.tsx",
-  outdir: "dist",
-  autorouter: "freerouting", // or "auto" to use autorouting.com
-})
+export default {
+  entrypoint: "src/index.tsx",
+  outDir: "dist",
+  defaultExportFormat: "gerber",
+}
 ```
 
----
+## Typical Development Workflow
 
-## Troubleshooting
-
-**Port already in use**
-
-```bash
-tsci dev --port 3001
+```
+┌─────────────────────────────────────────────┐
+│  1.  tsci init my-board                     │
+│  2.  tsci dev              ← live preview   │
+│  3.  Edit index.tsx        ← your design    │
+│  4.  tsci export --format gerber            │
+│  5.  Upload to JLCPCB / PCBWay             │
+└─────────────────────────────────────────────┘
 ```
 
-**TypeScript errors on start**
+## See Also
 
-Make sure `@tscircuit/core` is installed and your `tsconfig.json` includes `"jsx": "react-jsx"`.
-
-**Autorouter not running**
-
-For local autorouting, ensure Docker is installed. Alternatively, log in with `tsci login` to use the cloud autorouter at autorouting.com.
+- [PCB Viewer](./pcb-viewer.md) — the component the dev server uses for rendering
+- [Gerber Exporter](./gerber-exporter.md) — details on Gerber output
+- [Tools Overview](./overview.md)
