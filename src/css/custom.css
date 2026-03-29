@@ -34,41 +34,60 @@
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
 }
 
-/* Center the main content wrapper */
+/* ============================================================
+   CENTERING FIX — Make docs look like Bun docs
+   Issue: https://github.com/tscircuit/docs-old/issues/64
+   ============================================================ */
+
+/*
+ * Constrain the main page wrapper to a max-width and center it.
+ * This mirrors the layout used by Bun docs where all content
+ * sits inside a centered max-width container.
+ */
 .main-wrapper {
   max-width: var(--ifm-container-width);
-  margin: 0 auto;
+  margin-left: auto !important;
+  margin-right: auto !important;
   width: 100%;
 }
 
-/* Ensure the docs page content is properly centered */
-.docMainContainer_node_modules-\@docusaurus-theme-classic-lib-theme-DocPage-Layout-Main-styles-module,
-.docPage_node_modules-\@docusaurus-theme-classic-lib-theme-DocPage-Layout-styles-module {
-  max-width: 100%;
-}
-
-/* Center the navbar content */
+/*
+ * Ensure the navbar bar inner content is also centered and
+ * aligned with the rest of the page content.
+ */
 .navbar__inner {
   max-width: var(--ifm-container-width);
   margin: 0 auto;
+  padding: 0 var(--ifm-spacing-horizontal);
 }
 
-/* Center the footer content */
-.footer .container {
+/*
+ * Center footer container to match the rest of the page.
+ */
+.footer .container,
+.footer__links {
   max-width: var(--ifm-container-width);
   margin: 0 auto;
 }
 
-/* Properly center the doc article content */
+/*
+ * All generic Infima containers should respect the max-width
+ * and stay horizontally centered.
+ */
 .container {
   max-width: var(--ifm-container-width) !important;
   margin-left: auto !important;
   margin-right: auto !important;
 }
 
-/* Ensure proper padding on smaller screens */
+/* Ensure proper horizontal padding on mobile */
 @media (max-width: 996px) {
   .main-wrapper {
+    max-width: 100%;
     padding: 0;
+  }
+
+  .navbar__inner {
+    padding: 0 0.75rem;
   }
 }
