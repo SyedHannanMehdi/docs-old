@@ -7,7 +7,7 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula")
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: "tscircuit docs",
-  tagline: "Build electronics with TypeScript",
+  tagline: "Build electronics with code",
   favicon: "img/favicon.ico",
 
   // Set the production url of your site here
@@ -25,8 +25,8 @@ const config = {
   onBrokenMarkdownLinks: "warn",
 
   // Even if you don't use internalization, you can use this field to set useful
-  // metadata like html lang. For example, if your site is Chinese, you can set
-  // it to `zh-Hans`.
+  // metadata like html lang. For example, if your site is Chinese, you can replace
+  // "en" with "zh-Hans".
   i18n: {
     defaultLocale: "en",
     locales: ["en"],
@@ -39,7 +39,7 @@ const config = {
       ({
         docs: {
           sidebarPath: require.resolve("./sidebars.js"),
-          // This enables the "Edit this page" link on every doc page
+          // Add "Edit this page" link pointing to the GitHub source
           editUrl:
             "https://github.com/tscircuit/docs-old/edit/main/",
           routeBasePath: "/",
@@ -56,7 +56,7 @@ const config = {
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
       // Replace with your project's social card
-      image: "img/tscircuit-social-card.png",
+      image: "img/docusaurus-social-card.jpg",
       navbar: {
         title: "tscircuit",
         logo: {
@@ -93,21 +93,12 @@ const config = {
             title: "Community",
             items: [
               {
-                label: "Discord",
-                href: "https://discord.gg/tscircuit",
+                label: "GitHub",
+                href: "https://github.com/tscircuit/tscircuit",
               },
               {
                 label: "Twitter",
                 href: "https://twitter.com/tscircuit",
-              },
-            ],
-          },
-          {
-            title: "More",
-            items: [
-              {
-                label: "GitHub",
-                href: "https://github.com/tscircuit/tscircuit",
               },
             ],
           },
