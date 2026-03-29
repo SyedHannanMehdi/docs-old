@@ -25,8 +25,8 @@ const config = {
   onBrokenMarkdownLinks: "warn",
 
   // Even if you don't use internalization, you can use this field to set useful
-  // metadata like html lang. For example, if your site is Chinese, you may want
-  // to replace "en" with "zh-Hans".
+  // metadata like html lang. For example, if your site is Chinese, you should
+  // replace "en" with "zh-Hans".
   i18n: {
     defaultLocale: "en",
     locales: ["en"],
@@ -38,11 +38,11 @@ const config = {
       /** @type {import('@docusaurus/preset-classic').Options} */
       ({
         docs: {
-          routeBasePath: "/",
           sidebarPath: require.resolve("./sidebars.js"),
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           editUrl: "https://github.com/tscircuit/docs/tree/main/",
+          routeBasePath: "/",
         },
         blog: false,
         theme: {
@@ -65,7 +65,7 @@ const config = {
         },
         items: [
           {
-            href: "https://discord.gg/tscircuit",
+            href: "https://discord.gg/SMDXB6KTRM",
             label: "Discord",
             position: "right",
           },
@@ -80,30 +80,12 @@ const config = {
         style: "dark",
         links: [
           {
-            title: "Docs",
-            items: [
-              {
-                label: "Getting Started",
-                to: "/",
-              },
-            ],
-          },
-          {
             title: "Community",
             items: [
               {
                 label: "Discord",
-                href: "https://discord.gg/tscircuit",
+                href: "https://discord.gg/SMDXB6KTRM",
               },
-              {
-                label: "Twitter",
-                href: "https://twitter.com/tscircuit",
-              },
-            ],
-          },
-          {
-            title: "More",
-            items: [
               {
                 label: "GitHub",
                 href: "https://github.com/tscircuit/tscircuit",
