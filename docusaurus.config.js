@@ -12,7 +12,7 @@ const config = {
 
   // Set the production url of your site here
   url: "https://docs.tscircuit.com",
-  // Set the /<baseUrl>/ pathname under which your site is deployed
+  // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
   baseUrl: "/",
 
@@ -21,7 +21,7 @@ const config = {
   organizationName: "tscircuit", // Usually your GitHub org/user name.
   projectName: "docs", // Usually your repo name.
 
-  onBrokenLinks: "warn",
+  onBrokenLinks: "throw",
   onBrokenMarkdownLinks: "warn",
 
   // Even if you don't use internalization, you can use this field to set useful
@@ -89,8 +89,8 @@ const config = {
             title: "Docs",
             items: [
               {
-                label: "Getting Started",
-                to: "/",
+                label: "Tutorial",
+                to: "/intro",
               },
             ],
           },
@@ -99,7 +99,7 @@ const config = {
             items: [
               {
                 label: "Discord",
-                href: "https://discord.com/invite/tscircuit",
+                href: "https://tscircuit.com/community/join-redirect",
               },
               {
                 label: "Twitter",
@@ -114,14 +114,10 @@ const config = {
                 label: "GitHub",
                 href: "https://github.com/tscircuit/tscircuit",
               },
-              {
-                label: "Try Online",
-                href: "https://tscircuit.com/editor",
-              },
             ],
           },
         ],
-        copyright: `Copyright © ${new Date().getFullYear()} tscircuit. Built with Docusaurus.`,
+        copyright: `Copyright © ${new Date().getFullYear()} tscircuit, Inc. Built with Docusaurus.`,
       },
       prism: {
         theme: lightCodeTheme,
