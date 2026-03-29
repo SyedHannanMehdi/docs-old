@@ -7,7 +7,7 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula")
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: "tscircuit",
-  tagline: "React for Circuits",
+  tagline: "Build electronics with code",
   favicon: "img/favicon.ico",
 
   // Set the production url of your site here
@@ -25,7 +25,8 @@ const config = {
   onBrokenMarkdownLinks: "warn",
 
   // Even if you don't use internalization, you can use this field to set useful
-  // metadata like html lang. In this case we'll build it for zh-Hans.
+  // metadata like html lang. For example, if your site is Chinese, you can replace
+  // "en" with "zh-Hans".
   i18n: {
     defaultLocale: "en",
     locales: ["en"],
@@ -41,9 +42,13 @@ const config = {
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           editUrl: "https://github.com/tscircuit/docs/tree/main/",
-          routeBasePath: "/",
         },
-        blog: false,
+        blog: {
+          showReadingTime: true,
+          // Please change this to your repo.
+          // Remove this to remove the "edit this page" links.
+          editUrl: "https://github.com/tscircuit/docs/tree/main/",
+        },
         theme: {
           customCss: require.resolve("./src/css/custom.css"),
         },
@@ -64,6 +69,12 @@ const config = {
         },
         items: [
           {
+            type: "docSidebar",
+            sidebarId: "tutorialSidebar",
+            position: "left",
+            label: "Docs",
+          },
+          {
             href: "https://github.com/tscircuit/tscircuit",
             label: "GitHub",
             position: "right",
@@ -77,8 +88,8 @@ const config = {
             title: "Docs",
             items: [
               {
-                label: "Getting Started",
-                to: "/",
+                label: "Tutorial",
+                to: "/docs/intro",
               },
             ],
           },
