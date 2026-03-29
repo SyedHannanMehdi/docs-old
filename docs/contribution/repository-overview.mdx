@@ -1,0 +1,244 @@
+# tscircuit Repository Overview for Contributors
+
+Welcome to the tscircuit open-source ecosystem! This guide documents the different repositories that make up tscircuit and how you can contribute to each one.
+
+## Repository Map
+
+tscircuit is composed of many focused repositories, each responsible for a distinct part of the circuit design and simulation pipeline. Here's how they fit together:
+
+```
+User Code / React JSX
+        │
+        ▼
+  @tscircuit/core          ← Reconciler & component tree
+        │
+        ▼
+  circuit-json             ← Intermediate representation (IR)
+        │
+   ┌────┴────┐
+   ▼         ▼
+autorouter  renderers (svg, 3d, pcb, schematic)
+```
+
+---
+
+## Core Libraries
+
+### [`tscircuit/core`](https://github.com/tscircuit/core)
+
+**What it does:** The heart of tscircuit. This is the React reconciler and component library that converts JSX circuit components into `circuit-json`. Think of it as the React DOM for circuits.
+
+**Key concepts:**
+- React-based component reconciliation
+- Component primitives: `<resistor>`, `<capacitor>`, `<chip>`, `<trace>`, etc.
+- Converts component trees into a flat `circuit-json` data structure
+
+**Good first issues:** Component bugs, new primitive components, footprint improvements
+
+**Tech stack:** TypeScript, React reconciler
+
+---
+
+### [`tscircuit/circuit-json`](https://github.com/tscircuit/circuit-json)
+
+**What it does:** Defines the canonical intermediate representation (IR) for circuits. All tscircuit tools exchange data through this format — it's the lingua franca of the ecosystem.
+
+**Key concepts:**
+- Zod schemas for all circuit primitives (components, ports, traces, pads, etc.)
+- JSON-serializable, language-agnostic format
+- Used by renderers, autorouters, exporters, and importers
+
+**Good first issues:** Adding new element types, improving schema validation, fixing type definitions
+
+**Tech stack:** TypeScript, Zod
+
+---
+
+### [`tscircuit/snippets`](https://github.com/tscircuit/snippets)
+
+**What it does:** The online code editor and community platform at [tscircuit.com](https://tscircuit.com). Users write circuit code in the browser, preview it, and share it as "snippets."
+
+**Key concepts:**
+- Browser-based TypeScript/tscircuit editor
+- Live preview of PCB, schematic, and 3D views
+- User accounts, snippet sharing, forking
+
+**Good first issues:** UI improvements, editor features, snippet templates, bug fixes
+
+**Tech stack:** TypeScript, React, Vite, Bun
+
+---
+
+## Rendering
+
+### [`tscircuit/circuit-to-svg`](https://github.com/tscircuit/circuit-to-svg)
+
+**What it does:** Converts `circuit-json` into SVG images for schematic and PCB views.
+
+**Key concepts:**
+- Schematic symbol rendering
+- PCB layout rendering (copper layers, silkscreen, drill holes)
+- Used in the web editor, documentation, and exports
+
+**Good first issues:** Rendering bugs, new symbol shapes, visual improvements
+
+**Tech stack:** TypeScript, SVG generation
+
+---
+
+### [`tscircuit/3d-viewer`](https://github.com/tscircuit/3d-viewer)
+
+**What it does:** A React component that renders a 3D view of a PCB using Three.js. Displays component 3D models, copper layers, and board outline.
+
+**Key concepts:**
+- Three.js-based 3D PCB rendering
+- GLTF/GLB model loading for components
+- Embeddable as a React component
+
+**Good first issues:** 3D model additions, visual improvements, performance
+
+**Tech stack:** TypeScript, React, Three.js
+
+---
+
+### [`tscircuit/schematic-symbols`](https://github.com/tscircuit/schematic-symbols)
+
+**What it does:** A library of schematic symbols for electronic components. Each symbol is defined as a JSON/TypeScript structure that can be rendered to SVG.
+
+**Key concepts:**
+- Symbol definitions for resistors, capacitors, ICs, transistors, etc.
+- Port position metadata for connection alignment
+- Used by `circuit-to-svg` for schematic rendering
+
+**Good first issues:** Adding missing symbols, fixing symbol geometry, improving port positions
+
+**Tech stack:** TypeScript, SVG path data
+
+---
+
+## Routing
+
+### [`tscircuit/autorouter`](https://github.com/tscircuit/autorouter)
+
+**What it does:** Automatically routes traces (wires) on a PCB between component pads, avoiding obstacles and design-rule violations.
+
+**Key concepts:**
+- Multi-layer PCB trace routing
+- Obstacle avoidance (components, keepouts)
+- Via insertion for layer transitions
+- Design Rule Check (DRC) compliance
+
+**Good first issues:** Routing algorithm improvements, DRC rule additions, performance benchmarks
+
+**Tech stack:** TypeScript, graph/pathfinding algorithms
+
+---
+
+## Importing & Exporting
+
+### [`tscircuit/footprinter`](https://github.com/tscircuit/footprinter)
+
+**What it does:** Generates PCB footprints (pad layouts) from component parameter strings. E.g., `"0402"` → generates the correct pad positions and sizes for an 0402 resistor.
+
+**Key concepts:**
+- Parametric footprint generation
+- IPC-compliant footprint calculations
+- Supports SMD and through-hole packages
+
+**Good first issues:** Adding new package types (SOT, QFP, BGA, etc.), fixing pad dimensions
+
+**Tech stack:** TypeScript
+
+---
+
+### [`tscircuit/kicad-converter`](https://github.com/tscircuit/kicad-converter)
+
+**What it does:** Converts between `circuit-json` and KiCad file formats (`.kicad_pcb`, `.kicad_sch`). Enables round-tripping between tscircuit and KiCad.
+
+**Good first issues:** Parser improvements, handling edge cases, adding support for more KiCad elements
+
+**Tech stack:** TypeScript
+
+---
+
+### [`tscircuit/dsn-converter`](https://github.com/tscircuit/dsn-converter)
+
+**What it does:** Converts `circuit-json` to/from DSN (Specctra Design) format, enabling compatibility with external autorouters like Freerouting.
+
+**Good first issues:** Parsing edge cases, DSN spec coverage improvements
+
+**Tech stack:** TypeScript
+
+---
+
+### [`tscircuit/gerber-builder`](https://github.com/tscircuit/gerber-builder) / [`tscircuit/circuit-json-to-gerber`](https://github.com/tscircuit/circuit-json-to-gerber)
+
+**What it does:** Exports `circuit-json` to Gerber format — the industry-standard PCB manufacturing file format used by fabs like JLCPCB, PCBWay, etc.
+
+**Good first issues:** Gerber spec compliance, drill file improvements, manufacturing validation
+
+**Tech stack:** TypeScript
+
+---
+
+## Tooling & Infrastructure
+
+### [`tscircuit/cli`](https://github.com/tscircuit/cli)
+
+**What it does:** The `tsci` command-line tool. Lets you develop, preview, and export tscircuit projects from the terminal.
+
+**Key commands:** `tsci dev`, `tsci export`, `tsci push`
+
+**Good first issues:** New CLI commands, better error messages, config file support
+
+**Tech stack:** TypeScript, Node.js, Bun
+
+---
+
+### [`tscircuit/docs-old`](https://github.com/tscircuit/docs-old)
+
+**What it does:** The official documentation website for tscircuit (this repo!). Built with a modern docs framework, covering API references, tutorials, and guides.
+
+**Good first issues:** Adding missing docs, fixing typos, writing tutorials, improving examples
+
+**Tech stack:** MDX, Markdown, Vitepress / Docusaurus
+
+---
+
+## How to Choose Where to Contribute
+
+| I want to… | Repo to look at |
+|---|---|
+| Fix a component rendering bug | `tscircuit/core` |
+| Add a new schematic symbol | `tscircuit/schematic-symbols` |
+| Improve PCB rendering | `tscircuit/circuit-to-svg` |
+| Add a new footprint package | `tscircuit/footprinter` |
+| Improve the autorouter | `tscircuit/autorouter` |
+| Work on the online editor | `tscircuit/snippets` |
+| Add KiCad import/export features | `tscircuit/kicad-converter` |
+| Improve Gerber exports | `tscircuit/circuit-json-to-gerber` |
+| Improve the CLI | `tscircuit/cli` |
+| Write or fix documentation | `tscircuit/docs-old` |
+| Define new circuit-json elements | `tscircuit/circuit-json` |
+
+---
+
+## General Contribution Workflow
+
+1. **Find an issue** — Look for `good first issue` or `help wanted` labels on any of the repos above.
+2. **Fork & clone** — Fork the repo and clone it locally.
+3. **Install dependencies** — Most repos use `bun install` (some use `npm install`).
+4. **Run tests** — `bun test` or `npm test` to make sure everything passes before you start.
+5. **Make your changes** — Follow existing code style; TypeScript is used throughout.
+6. **Add/update tests** — All PRs should include tests for new behavior.
+7. **Open a PR** — Reference the issue number in your PR description (e.g., `Closes #42`).
+
+---
+
+## Community & Help
+
+- **Discord:** Join the tscircuit Discord for questions and real-time help from maintainers.
+- **GitHub Discussions:** Use GitHub Discussions on the main [`tscircuit/tscircuit`](https://github.com/tscircuit/tscircuit) repo for broader questions.
+- **Issues:** If you find a bug or want to request a feature, open an issue in the relevant repo.
+
+Happy building! ⚡🔌
