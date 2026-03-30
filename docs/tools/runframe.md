@@ -1,134 +1,73 @@
 # Runframe
 
-**Repository:** [tscircuit/runframe](https://github.com/tscircuit/runframe)  
-**npm:** [`@tscircuit/runframe`](https://www.npmjs.com/package/@tscircuit/runframe)
+**Runframe** is a browser-based circuit runner and live-preview environment for tscircuit. It lets you write, run, and inspect tscircuit code entirely in the browser — no local installation required.
 
-Runframe is a sandboxed, in-browser execution environment for tscircuit code. It compiles and evaluates TypeScript circuit code entirely client-side using a Web Worker, then renders the resulting PCB, schematic, and 3D views — no server required.
+## Access
 
-It is embedded in [tscircuit.com](https://tscircuit.com) to power the online snippet editor, and can be embedded in any React application.
+👉 [runframe.tscircuit.com](https://runframe.tscircuit.com)
 
-## Installation
+Runframe is also embedded in [tscircuit.com](https://tscircuit.com) snippets and can be self-hosted or embedded in your own React application.
+
+## What Runframe Does
+
+Runframe executes tscircuit code **inside a web worker** so the main thread stays responsive. It then renders the resulting circuit JSON through the [PCB Viewer](./pcb-viewer.md) and schematic viewer — giving you instant visual feedback as you type.
+
+### Key Features
+
+| Feature | Description |
+|---------|-------------|
+| **Live preview** | PCB and schematic update on every code change |
+| **Error panel** | Compile and DRC errors shown inline |
+| **Multiple view tabs** | PCB, Schematic, 3D, and raw circuit JSON (soup) |
+| **Import from registry** | Use `@tsci/` packages directly in the browser |
+| **Share via URL** | Generated code can be shared as a permalink |
+| **Embed anywhere** | Drop into any React app with the npm package |
+
+## Using the Runframe React Component
 
 ```bash
 npm install @tscircuit/runframe
 ```
 
-## Basic Usage
-
 ```tsx
 import { RunFrame } from "@tscircuit/runframe"
 
-const code = `
-import { Circuit } from "@tscircuit/core"
+export default function Playground() {
+  return (
+    <RunFrame
+      defaultCode={`
+import { resistor, led } from "@tscircuit/core"
 
 export default () => (
-  <board width="20mm" height="20mm">
-    <resistor name="R1" resistance="10k" footprint="0402" pcbX={0} pcbY={0} />
-    <capacitor name="C1" capacitance="100nF" footprint="0402" pcbX={5} pcbY={0} />
+  <board width="10mm" height="10mm">
+    <resistor resistance="1k" footprint="0402" name="R1" />
+    <led color="red" footprint="0402" name="LED1" />
   </board>
 )
-`
-
-export default function App() {
-  return (
-    <div style={{ width: "100%", height: 700 }}>
-      <RunFrame code={code} entrypoint="index.tsx" />
-    </div>
+      `.trim()}
+      style={{ width: "100%", height: "80vh" }}
+    />
   )
 }
 ```
 
-## Props
+### Props
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `code` | `string` | **required** | TypeScript/TSX source code to execute |
-| `entrypoint` | `string` | `"index.tsx"` | Filename used for error messages and module resolution |
-| `files` | `Record<string, string>` | `{}` | Additional virtual files available to the entrypoint via relative imports |
-| `onRenderComplete` | `(circuitJson: AnyCircuitElement[]) => void` | — | Called after a successful render with the resulting circuit JSON |
-| `onError` | `(error: Error) => void` | — | Called when a compile or runtime error occurs |
-| `defaultTab` | `"pcb" \| "schematic" \| "3d" \| "code"` | `"pcb"` | Initially active tab |
-| `showCode` | `boolean` | `true` | Whether to show the Code tab |
+| Prop | Type | Description |
+|------|------|-------------|
+| `defaultCode` | `string` | Initial TypeScript/TSX code to load |
+| `code` | `string` | Controlled code value |
+| `onCodeChange` | `(code: string) => void` | Called when user edits code |
+| `style` | `React.CSSProperties` | Container style |
+| `showCodeEditor` | `boolean` | Show/hide the code editor pane (default `true`) |
 
-## Multi-file Example
+## How It Works Internally
 
-You can pass additional virtual files that the entrypoint can import:
+1. User code is bundled in a **web worker** using an in-browser bundler.
+2. The bundled module is executed; the default export (a React component) is rendered by tscircuit/core to produce **circuit JSON**.
+3. The circuit JSON is passed to the PCB Viewer and schematic viewer components.
+4. DRC checks run against the circuit JSON and surface errors.
 
-```tsx
-<RunFrame
-  files={{
-    "index.tsx": `
-      import { MyChip } from "./MyChip"
-      export default () => (
-        <board width="40mm" height="30mm">
-          <MyChip name="U1" pcbX={0} pcbY={0} />
-        </board>
-      )
-    `,
-    "MyChip.tsx": `
-      export const MyChip = (props) => (
-        <chip
-          {...props}
-          footprint="soic8"
-          pinLabels={{ pin1: "VCC", pin2: "GND", pin3: "OUT" }}
-        />
-      )
-    `,
-  }}
-  entrypoint="index.tsx"
-/>
-```
+## GitHub / Repository
 
-## How It Works
-
-```
-┌─────────────────────────────────────────────────────┐
-│  Browser Main Thread                                │
-│                                                     │
-│   <RunFrame code={...} />                          │
-│        │                                            │
-│        │  postMessage(code)                         │
-│        ▼                                            │
-│  ┌───────────────┐    ┌──────────────────────────┐ │
-│  │  Web Worker   │    │  Import from CDN          │ │
-│  │               │◄───│  (esm.sh / unpkg)         │ │
-│  │  TypeScript   │    │  @tscircuit/core, etc.    │ │
-│  │  compile      │    └──────────────────────────┘ │
-│  │  + evaluate   │                                  │
-│  │               │                                  │
-│  └──────┬────────┘                                  │
-│         │  circuitJson                              │
-│         ▼                                           │
-│   <PCBViewer />  <SchematicViewer />  <3DViewer />  │
-└─────────────────────────────────────────────────────┘
-```
-
-1. Your code string is sent to a **Web Worker** via `postMessage`.
-2. The worker compiles TypeScript using the bundled TypeScript compiler.
-3. `@tscircuit/*` imports are resolved from a CDN (no local install needed inside the sandbox).
-4. The default export is called; the resulting circuit JSON is sent back to the main thread.
-5. The main thread passes the circuit JSON to the viewer components.
-
-## Error Handling
-
-Runframe displays errors inline beneath the editor:
-
-- **TypeScript compile errors** — shown with file/line information before execution.
-- **Runtime errors** — caught and displayed with a stack trace.
-- **Layout errors** — component overlap or impossible constraints are highlighted on the PCB view.
-
-## Viewing Tabs
-
-| Tab | What it shows |
-|-----|---------------|
-| **PCB** | Interactive top-down PCB layout |
-| **Schematic** | Auto-generated schematic diagram |
-| **3D** | Three-dimensional board render |
-| **Code** | The raw source code (read-only or editable) |
-
-## See Also
-
-- [tscircuit.com Snippets](./snippets.md) — hosted platform built on Runframe
-- [PCB Viewer](./pcb-viewer.md) — the PCB component embedded inside Runframe
-- [Core (`@tscircuit/core`)](./core.md) — the renderer that Runframe invokes
-- [Tools Overview](./overview.md)
+[github.com/tscircuit/runframe](https://github.com/tscircuit/runframe)
