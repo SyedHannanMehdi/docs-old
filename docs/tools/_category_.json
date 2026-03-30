@@ -1,0 +1,8 @@
+{
+  "label": "Tools",
+  "position": 3,
+  "link": {
+    "type": "generated-index",
+    "description": "Overview of the different user-facing tools in the tscircuit ecosystem."
+  }
+}
