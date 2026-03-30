@@ -1,34 +1,27 @@
 /* Global styles for tscircuit docs */
 
-/* Center main content like Bun docs */
-.nextra-content-container {
-  max-width: 90rem;
-  margin-left: auto;
-  margin-right: auto;
-}
+/*
+ * Center main content like Bun docs.
+ * Bun docs keep a narrow, centered prose column with the sidebar
+ * to the left — this mirrors that layout using Nextra's class names.
+ */
 
-/* Center the article/prose content */
-article.nextra-body,
-.nextra-body {
+/* Nextra wraps page content in this element */
+.nextra-content {
   max-width: 768px;
   margin-left: auto;
   margin-right: auto;
 }
 
-/* Proper centering for the main doc body */
-.nx-max-w-\[90rem\] {
+/* Tailwind-based Nextra v2 content wrapper */
+.nx-container {
   max-width: 90rem;
-  margin-left: auto !important;
-  margin-right: auto !important;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-/* Content wrapper centering */
-main {
-  display: flex;
-  justify-content: center;
-}
-
-main > article {
-  width: 100%;
-  max-width: 768px;
+/* Ensure article body is centered within its column */
+article {
+  margin-left: auto;
+  margin-right: auto;
 }
