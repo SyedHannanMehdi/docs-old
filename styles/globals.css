@@ -1,0 +1,34 @@
+/* Global styles for tscircuit docs */
+
+/* Center main content like Bun docs */
+.nextra-content-container {
+  max-width: 90rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Center the article/prose content */
+article.nextra-body,
+.nextra-body {
+  max-width: 768px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Proper centering for the main doc body */
+.nx-max-w-\[90rem\] {
+  max-width: 90rem;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+/* Content wrapper centering */
+main {
+  display: flex;
+  justify-content: center;
+}
+
+main > article {
+  width: 100%;
+  max-width: 768px;
+}
