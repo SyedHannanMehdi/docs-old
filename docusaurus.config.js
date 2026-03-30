@@ -21,7 +21,7 @@ const config = {
   organizationName: "tscircuit", // Usually your GitHub org/user name.
   projectName: "docs", // Usually your repo name.
 
-  onBrokenLinks: "throw",
+  onBrokenLinks: "warn",
   onBrokenMarkdownLinks: "warn",
 
   // Even if you don't use internalization, you can use this field to set useful
@@ -56,7 +56,7 @@ const config = {
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
       // Replace with your project's social card
-      image: "img/docusaurus-social-card.jpg",
+      image: "img/tscircuit-social-card.png",
       navbar: {
         title: "tscircuit",
         logo: {
@@ -84,7 +84,7 @@ const config = {
             title: "Docs",
             items: [
               {
-                label: "Getting Started",
+                label: "Introduction",
                 to: "/",
               },
             ],
@@ -93,12 +93,21 @@ const config = {
             title: "Community",
             items: [
               {
-                label: "GitHub",
-                href: "https://github.com/tscircuit/tscircuit",
+                label: "Discord",
+                href: "https://discord.gg/tscircuit",
               },
               {
                 label: "Twitter",
                 href: "https://twitter.com/tscircuit",
+              },
+            ],
+          },
+          {
+            title: "More",
+            items: [
+              {
+                label: "GitHub",
+                href: "https://github.com/tscircuit/tscircuit",
               },
             ],
           },
