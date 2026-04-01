@@ -15,14 +15,9 @@
   --ifm-color-primary-lightest: #1ed4ff;
   --ifm-code-font-size: 95%;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
-
-  /* Center the content with a comfortable reading width */
   --ifm-container-width: 1280px;
   --ifm-container-width-xl: 1280px;
   --ifm-spacing-horizontal: 1.5rem;
-
-  /* Improve doc article width so content is centered and readable */
-  --doc-sidebar-width: 280px;
 }
 
 /* For readability concerns, you should choose a lighter palette in dark mode. */
@@ -37,32 +32,55 @@
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
 }
 
-/* Center the main docs content area */
+/* Center the main layout wrapper */
+.main-wrapper {
+  max-width: var(--ifm-container-width);
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* Ensure the docs page container is centered */
+.docPage_node_modules-docusaurus-theme-classic-lib-theme-DocPage-Layout-styles-module,
+[class*="docPage_"] {
+  max-width: var(--ifm-container-width);
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* Center the docs content area */
+.docMainContainer_node_modules-docusaurus-theme-classic-lib-theme-DocPage-Layout-Main-styles-module,
+[class*="docMainContainer_"] {
+  max-width: 100%;
+}
+
+/* Ensure article content has a comfortable reading width */
+.theme-doc-markdown.markdown,
+article.margin-vert--lg {
+  max-width: 860px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Ensure the docs sidebar + content layout is properly centered */
+.docs-wrapper,
 .container {
+  max-width: var(--ifm-container-width) !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+/* Center the navbar content */
+.navbar__inner {
   max-width: var(--ifm-container-width);
   margin: 0 auto;
 }
 
-/* Ensure the doc article content is properly centered and not stretched */
-.docMainContainer {
-  display: flex;
-  justify-content: center;
-}
-
-article {
-  max-width: 860px;
-  width: 100%;
-}
-
-/* Center doc page layout so article content sits in the middle */
-.docItemCol {
-  display: flex;
-  justify-content: center;
-}
-
-.docItemCol > div {
-  width: 100%;
-  max-width: 860px;
+/* Center the footer content */
+.footer__links,
+.footer .container {
+  max-width: var(--ifm-container-width);
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .header-github-link::before {
