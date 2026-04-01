@@ -17,7 +17,6 @@
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
   --ifm-container-width: 1280px;
   --ifm-container-width-xl: 1280px;
-  --ifm-spacing-horizontal: 1.5rem;
 }
 
 /* For readability concerns, you should choose a lighter palette in dark mode. */
@@ -47,28 +46,44 @@
   background-color: var(--ifm-navbar-link-hover-color);
 }
 
-/* Center the main content wrapper */
-.main-wrapper {
-  max-width: var(--ifm-container-width);
-  margin: 0 auto;
+/* ──────────────────────────────────────────────
+   Centering: make docs layout match Bun docs
+   The entire sidebar + content row is wrapped in
+   a .container that Docusaurus already centres,
+   but only up to --ifm-container-width.  We also
+   need the wrapping <main> / .main-wrapper to
+   stretch full-width so the container inside can
+   centre properly.
+   ────────────────────────────────────────────── */
+
+/* Let the full-width wrappers stretch edge-to-edge … */
+.main-wrapper,
+[class*='docPage'],
+[class*='docRoot'] {
   width: 100%;
-}
-
-/* Ensure the docs page layout is centered */
-.docPage_node_modules-\@docusaurus-theme-classic-lib-theme-DocPage-Layout-styles-module {
-  max-width: var(--ifm-container-width);
-  margin: 0 auto;
-}
-
-/* Center docs layout */
-.docItemCol_node_modules-\@docusaurus-theme-classic-lib-theme-DocItem-Layout-styles-module {
   max-width: 100%;
 }
 
-/* Ensure containers are centered */
+/* … while the inner Docusaurus container is centred. */
 .container {
   max-width: var(--ifm-container-width) !important;
-  margin: 0 auto !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+/* Navbar inner wrapper */
+.navbar__inner {
+  max-width: var(--ifm-container-width);
+  margin: 0 auto;
+}
+
+/* Footer inner wrapper */
+.footer__links,
+.footer .container {
+  max-width: var(--ifm-container-width);
+  margin: 0 auto;
 }
 
 .cardContainer {
