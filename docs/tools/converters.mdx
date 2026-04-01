@@ -1,0 +1,106 @@
+---
+title: "Converters"
+description: "Convert tscircuit designs to and from industry-standard formats"
+sidebar_position: 8
+---
+
+# Converters
+
+tscircuit supports exporting your designs to a variety of industry-standard formats, and importing components from existing EDA tools.
+
+## Export Formats
+
+Once you have a compiled circuit JSON (`soup`), you can convert it to manufacturing-ready files.
+
+### Gerber / RS-274X
+
+Standard format accepted by virtually all PCB manufacturers (JLCPCB, PCBWay, OSHPark, etc.).
+
+```ts
+import { circuitJsonToGerberFiles } from "@tscircuit/circuit-json-to-gerber"
+
+const gerberFiles = await circuitJsonToGerberFiles(circuitJson)
+// gerberFiles is a map of filename → file content string
+```
+
+- **GitHub**: [github.com/tscircuit/circuit-json-to-gerber](https://github.com/tscircuit/circuit-json-to-gerber)
+
+### Bill of Materials (BOM) — CSV
+
+A CSV listing every component, its value, footprint, and LCSC/JLCPCB part number.
+
+```ts
+import { circuitJsonToBom } from "@tscircuit/circuit-json-to-bom-csv"
+
+const bomCsv = circuitJsonToBom(circuitJson)
+```
+
+- **GitHub**: [github.com/tscircuit/circuit-json-to-bom-csv](https://github.com/tscircuit/circuit-json-to-bom-csv)
+
+### Pick and Place (PnP) — CSV
+
+A CSV used by pick-and-place assembly machines listing each SMD component position, rotation, and side.
+
+```ts
+import { circuitJsonToPnpCsv } from "@tscircuit/circuit-json-to-pnp-csv"
+
+const pnpCsv = circuitJsonToPnpCsv(circuitJson)
+```
+
+- **GitHub**: [github.com/tscircuit/circuit-json-to-pnp-csv](https://github.com/tscircuit/circuit-json-to-pnp-csv)
+
+### SVG
+
+Export a schematic or PCB layer as an SVG image.
+
+```ts
+import { circuitJsonToSchematicSvg } from "@tscircuit/circuit-json-to-svg"
+import { circuitJsonToPcbSvg } from "@tscircuit/circuit-json-to-svg"
+
+const schematicSvg = circuitJsonToSchematicSvg(circuitJson)
+const pcbSvg = circuitJsonToPcbSvg(circuitJson)
+```
+
+- **GitHub**: [github.com/tscircuit/circuit-json-to-svg](https://github.com/tscircuit/circuit-json-to-svg)
+
+### SPICE Netlist
+
+Export a SPICE-compatible netlist for simulation.
+
+- **GitHub**: [github.com/tscircuit/circuit-json-to-spice](https://github.com/tscircuit/circuit-json-to-spice)
+
+## Import Formats
+
+### KiCad Footprints (`.kicad_mod`)
+
+Convert KiCad footprint files to tscircuit-compatible components.
+
+```bash
+tsci import footprint MyComponent.kicad_mod
+```
+
+- **GitHub**: [github.com/tscircuit/kicad-component-converter](https://github.com/tscircuit/kicad-component-converter)
+- **Online tool**: [tscircuit.com/tools/import-kicad-footprint](https://tscircuit.com)
+
+### EasyEDA / LCSC Components
+
+Convert EasyEDA component JSON (downloadable from LCSC) to tscircuit footprint components.
+
+- **GitHub**: [github.com/tscircuit/easyeda-converter](https://github.com/tscircuit/easyeda-converter)
+- **Online tool**: available on tscircuit.com component import page
+
+## Using Converters in the Playground
+
+All export formats are available in the **Export** dropdown on [tscircuit.com](https://tscircuit.com). Click **Export** in the playground toolbar to download Gerber ZIP, BOM CSV, or PnP CSV files directly.
+
+## Summary Table
+
+| Converter | Direction | Package |
+|-----------|-----------|---------|
+| Gerber | Export | `@tscircuit/circuit-json-to-gerber` |
+| BOM CSV | Export | `@tscircuit/circuit-json-to-bom-csv` |
+| PnP CSV | Export | `@tscircuit/circuit-json-to-pnp-csv` |
+| SVG | Export | `@tscircuit/circuit-json-to-svg` |
+| SPICE Netlist | Export | `@tscircuit/circuit-json-to-spice` |
+| KiCad footprint | Import | `@tscircuit/kicad-component-converter` |
+| EasyEDA / LCSC | Import | `@tscircuit/easyeda-converter` |
