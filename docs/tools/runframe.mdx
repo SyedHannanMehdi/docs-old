@@ -1,86 +1,49 @@
 ---
-title: "Runframe & tscircuit.com"
-description: "Browser-based live preview and sharing platform for tscircuit circuits"
+title: "Runframe (tscircuit.com Playground)"
+description: "Run and preview tscircuit code directly in your browser"
 sidebar_position: 2
 ---
 
-# Runframe & tscircuit.com
+# Runframe
 
-[tscircuit.com](https://tscircuit.com) is the hosted platform built on top of
-**Runframe** — an open-source, browser-based circuit runner that evaluates
-your TypeScript/TSX circuit code entirely in the browser and renders an
-interactive schematic and PCB preview in real time.
+**Runframe** is the browser-based circuit runner and playground built into [tscircuit.com](https://tscircuit.com). It lets you write, run, and preview tscircuit code without installing anything locally.
 
-## What is Runframe?
+## What It Does
 
-[`runframe`](https://github.com/tscircuit/runframe) is the open-source React
-component at the heart of tscircuit.com. It:
+- Compiles and executes TypeScript/TSX circuit code in the browser using a web worker
+- Renders an interactive **Schematic** and **PCB** preview side-by-side
+- Supports importing packages from the tscircuit registry
+- Exports your design to files (Gerber, BOM, Pick-and-Place, etc.)
 
-- Compiles and evaluates TSX circuit code **inside a Web Worker** using an
-  in-browser TypeScript bundler, so nothing needs to be installed.
-- Renders the **schematic view** and **PCB view** side-by-side.
-- Shows build errors inline with a code editor.
-- Supports importing packages from the tscircuit registry on the fly.
+## How to Use
 
-You can embed Runframe in your own app — see the
-[runframe GitHub repository](https://github.com/tscircuit/runframe) for
-installation and embedding instructions.
+1. Go to [tscircuit.com](https://tscircuit.com)
+2. Click **"New"** in the top navigation — no sign-up required
+3. Write or paste your circuit code in the editor on the left
+4. The schematic and PCB views update automatically as you type
 
-## Using tscircuit.com
+```tsx
+import { Led, Resistor } from "@tsci/seveibar.smd-led"
 
-### Create a snippet
-
-1. Go to [tscircuit.com](https://tscircuit.com).
-2. Click **New** (no sign-up required for anonymous snippets).
-3. Write or paste your circuit TSX in the code editor on the left.
-4. The preview updates automatically as you type.
-
-### Share a circuit
-
-Every snippet gets a unique URL. Share that URL with teammates or embed it in
-a pull request or issue.
-
-### Publish to the registry
-
-Log in with GitHub, then click **Publish**. Your circuit becomes available on
-the [tscircuit registry](https://tscircuit.com/trending) so others can install
-it with:
-
-```bash
-tsci add @your-username/your-circuit
+export default () => (
+  <board width="10mm" height="10mm">
+    <Led name="LED1" />
+    <Resistor name="R1" resistance="100ohm" footprint="0402" />
+  </board>
+)
 ```
 
-## Runframe Keyboard Shortcuts
+## Sharing Circuits
 
-| Shortcut | Action |
-|---|---|
-| `Ctrl/Cmd + S` | Force re-run the circuit |
-| `Scroll` | Zoom in/out on the viewer |
-| `Click + drag` | Pan the viewer |
+Every circuit you save is published to the **registry** and gets a unique URL that you can share with others. Saved circuits are visible on your profile page.
 
-## Embedding Runframe
+## Running Locally with `@tscircuit/runframe`
+
+Runframe is also available as a standalone React component / Electron app for local development:
 
 ```bash
 npm install @tscircuit/runframe
 ```
 
-```tsx title="App.tsx"
-import { RunFrame } from "@tscircuit/runframe"
-
-export default function App() {
-  return (
-    <RunFrame
-      code={`
-export default () => (
-  <resistor name="R1" resistance="10kohm" footprint="0402" />
-)
-      `}
-    />
-  )
-}
-```
-
-## Related tools
-
-- [PCB Viewer](./pcb-viewer) — the viewer embedded inside Runframe
-- [Core](./core) — the rendering engine Runframe calls internally
+- **GitHub**: [github.com/tscircuit/runframe](https://github.com/tscircuit/runframe)
+- It is also what powers the `tsci dev` local preview server (see [CLI](./cli)).
