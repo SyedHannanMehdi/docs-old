@@ -1,26 +1,24 @@
 ---
 title: "Tools Overview"
-description: "A guide to the different user-facing tools in the tscircuit ecosystem"
+description: "A map of every user-facing tool in the tscircuit ecosystem"
+slug: /tools
 sidebar_position: 1
 ---
 
 # tscircuit Tools Overview
 
-tscircuit provides a rich set of tools that work together to help you design,
-preview, route, convert, and manufacture printed circuit boards using TypeScript
-and React. This section covers each tool in depth.
+tscircuit ships a collection of tightly-integrated tools that take you from
+writing TypeScript circuit code all the way to manufacturing-ready Gerber files.
+This page gives you a bird's-eye view of each tool and when to reach for it.
 
-## Tool Summary
+| Tool | Where to use it | What it does |
+|---|---|---|
+| [tscircuit.com / Runframe](./runframe) | Browser | Live preview, share & publish circuits |
+| [CLI (`tsci`)](./cli) | Terminal | Init, dev server, build & publish from the command line |
+| [PCB Viewer](./pcb-viewer) | Browser / embedded | Interactive PCB rendering and inspection |
+| [Autorouter (autorouting.com)](./autorouter) | Browser / API | Automatically route traces on a PCB |
+| [Format Converters](./format-converters) | CLI / API | Convert Circuit JSON to Gerber, KiCad, SVG, STEP & more |
+| [Core (`@tscircuit/core`)](./core) | npm package | React-based circuit rendering engine |
 
-| Tool | What it does | Where to find it |
-|------|-------------|-----------------|
-| [tscircuit.com / Runframe](./runframe) | Browser-based circuit editor & preview | [tscircuit.com](https://tscircuit.com) |
-| [CLI (`tsci`)](./cli) | Local development server, project scaffolding, publishing | npm / terminal |
-| [PCB Viewer](./pcb-viewer) | Interactive 2-D PCB renderer | embedded in runframe & npm |
-| [Schematic Viewer](./schematic-viewer) | Interactive schematic renderer | embedded in runframe & npm |
-| [Autorouter (autorouting.com)](./autorouter) | Automatic PCB trace routing | [autorouting.com](https://autorouting.com) |
-| [Core (`@tscircuit/core`)](./core) | React rendering engine that converts JSX to Circuit JSON | npm |
-| [Converters](./converters) | Export/import between Circuit JSON, Gerber, KiCad, STEP, etc. | CLI & npm |
-
-Each tool page explains the purpose of the tool, how to install or access it,
-and how it fits into a typical tscircuit workflow.
+Pick the section that matches what you want to do, or start with the
+[Quickstart](/quickstart) if you are brand new to tscircuit.
