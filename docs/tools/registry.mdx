@@ -1,0 +1,62 @@
+---
+title: "Registry"
+description: "Publish and discover reusable tscircuit components"
+sidebar_position: 7
+---
+
+# Registry
+
+The **tscircuit Registry** is a package registry for reusable circuit components — footprints, modules, development boards, and complete sub-circuits. It is hosted at [tscircuit.com/trending](https://tscircuit.com/trending).
+
+## Browsing the Registry
+
+Visit [tscircuit.com/trending](https://tscircuit.com/trending) to explore community-published packages. Each package page shows:
+
+- A live schematic and PCB preview
+- The source code
+- Installation instructions
+
+## Installing a Registry Package
+
+Packages from the registry are imported with the `@tsci/` prefix:
+
+```bash
+# No explicit install step needed — imports are resolved automatically
+# in the playground, or via the tscircuit package manager locally:
+tsci add @tsci/seveibar.smd-led
+```
+
+Then use it in your circuit:
+
+```tsx
+import { Led } from "@tsci/seveibar.smd-led"
+
+export default () => (
+  <board width="20mm" height="20mm">
+    <Led name="LED1" footprint="0603" />
+  </board>
+)
+```
+
+## Publishing a Package
+
+1. Make sure you are logged in: `tsci login`
+2. In your project directory, run:
+
+```bash
+tsci publish
+```
+
+Your package is published under your username (e.g. `@tsci/yourname.my-circuit`). It will be immediately available on the registry and importable by other users.
+
+## Package Naming Convention
+
+```
+@tsci/<author>.<package-name>
+```
+
+For example: `@tsci/seveibar.smd-led`, `@tsci/tscircuit.esp32-s3`.
+
+## GitHub
+
+- [github.com/tscircuit/registry](https://github.com/tscircuit/registry)
