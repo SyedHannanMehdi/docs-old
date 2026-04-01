@@ -1,34 +1,26 @@
+---
+title: "Tools Overview"
+description: "An overview of the user-facing tools in the tscircuit ecosystem"
+sidebar_position: 1
+---
+
 # tscircuit Tools Overview
 
-tscircuit provides a suite of user-facing tools that span the full circuit design and prototyping workflow — from writing circuit code to viewing PCB layouts, routing traces, and exporting to industry-standard formats.
+tscircuit is a full-stack electronics design ecosystem. Rather than a single
+monolithic application, it is composed of focused tools that each address a
+specific part of the circuit-design workflow. You can use them independently or
+together, depending on your needs.
 
-## Available Tools
-
-| Tool | Description | Where to Access |
-|------|-------------|-----------------|
-| [tscircuit CLI](./cli.md) | Scaffold, develop, and build circuit projects | `npm install -g @tscircuit/cli` |
-| [PCB Viewer](./pcb-viewer.md) | Interactive 2D/3D PCB visualization | [tscircuit.com](https://tscircuit.com) / npm |
-| [Runframe](./runframe.md) | In-browser circuit runner and live preview | [runframe.tscircuit.com](https://runframe.tscircuit.com) |
-| [Autorouter](./autorouter.md) | Automatic PCB trace routing service | [autorouting.com](https://autorouting.com) |
-| [tscircuit Core](./core.md) | The circuit rendering / compilation engine | npm package |
-| [Converters](./converters.md) | Convert between PCB/schematic file formats | Online tools + CLI |
+| Tool | What it does |
+|------|--------------|
+| [tscircuit.com / Runframe](./runframe) | Browser-based circuit editor & preview |
+| [CLI (`tsci`)](./cli) | Local development server & project scaffolding |
+| [PCB Viewer](./pcb-viewer) | Interactive PCB visualizer component |
+| [Autorouting.com](./autorouter) | Cloud auto-router for PCB traces |
+| [Core (`@tscircuit/core`)](./core) | Rendering engine that powers everything |
+| [File Format Converters](./converters) | Export to Gerber, KiCad, STEP, SVG, and more |
 
 ---
 
-## Workflow Overview
-
-```
-Write Circuit Code (TypeScript)
-         │
-         ▼
-   tscircuit CLI / Runframe   ← live preview & development
-         │
-         ▼
-    tscircuit Core            ← compiles to circuit JSON (soup)
-         │
-         ├──► PCB Viewer      ← visualize your layout
-         │
-         ├──► Autorouter      ← automatically route traces
-         │
-         └──► Converters      ← export to KiCad, Gerber, etc.
-```
+Each tool page explains what the tool does, who it is for, where to find it, and
+how to get started.
