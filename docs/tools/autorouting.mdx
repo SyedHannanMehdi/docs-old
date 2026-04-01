@@ -1,0 +1,52 @@
+---
+title: "Autorouting (autorouting.com)"
+description: "Cloud-based and local PCB autorouting for tscircuit designs"
+sidebar_position: 6
+---
+
+# Autorouting
+
+**Autorouting** automatically connects all the unrouted nets on a PCB by finding valid copper trace paths that respect design rules (clearance, width, via constraints, etc.).
+
+tscircuit provides both a cloud service and a local autorouter.
+
+## autorouting.com
+
+[autorouting.com](https://autorouting.com) is a hosted autorouting API and playground. You can:
+
+- Paste or upload a circuit JSON (soup) file
+- Run the autorouter in the cloud and see results in seconds
+- Compare different routing algorithms side-by-side
+- Download the routed output back as circuit JSON
+
+### How It Works in the tscircuit Workflow
+
+When you call `tsci build` or trigger routing in the playground, tscircuit sends the unrouted circuit JSON to the autorouting API, which returns a fully routed version. The routed traces are then merged back into your design.
+
+## Local Autorouter (`@tscircuit/autorouter`)
+
+The autorouter is also available as a local npm package for offline use or for embedding in your own tooling:
+
+```bash
+npm install @tscircuit/autorouter
+```
+
+```ts
+import { autoroute } from "@tscircuit/autorouter"
+
+const routedCircuitJson = await autoroute(unroutedCircuitJson)
+```
+
+## Routing Algorithms
+
+| Algorithm | Description |
+|-----------|-------------|
+| `simple-grid` | Fast grid-based maze router, good for simple boards |
+| `infgrid` | High-resolution infinite-grid router, better trace quality |
+
+The algorithm can be selected via the `algorithm` option or on the autorouting.com UI.
+
+## GitHub
+
+- [github.com/tscircuit/autorouting](https://github.com/tscircuit/autorouting)
+- API documentation: [autorouting.com/docs](https://autorouting.com)
