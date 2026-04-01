@@ -1,0 +1,57 @@
+---
+title: "Schematic Viewer"
+description: "An interactive React component for visualizing circuit schematics"
+sidebar_position: 5
+---
+
+# Schematic Viewer
+
+The **Schematic Viewer** is an interactive React component that renders a circuit schematic from tscircuit's internal circuit JSON (`soup`) format. It is displayed alongside the PCB Viewer in the playground and the local development server.
+
+## Features
+
+- Renders component symbols, nets, labels, and power flags
+- Pan and zoom with mouse/touch
+- Hover tooltips with component properties
+- Consistent styling with the rest of the tscircuit toolchain
+
+## Installation
+
+```bash
+npm install @tscircuit/schematic-viewer
+```
+
+## Usage
+
+```tsx
+import SchematicViewer from "@tscircuit/schematic-viewer"
+
+export default function App() {
+  const circuitJson = [/* your circuit JSON soup */]
+
+  return (
+    <div style={{ width: 800, height: 600 }}>
+      <SchematicViewer circuitJson={circuitJson} />
+    </div>
+  )
+}
+```
+
+### Props
+
+| Prop | Type | Description |
+|------|------|-------------|
+| `circuitJson` | `AnySoupElement[]` | The circuit JSON (soup) to render |
+| `height` | `number` | Optional height override in pixels |
+
+## Where It's Used
+
+| Context | How |
+|---------|-----|
+| [tscircuit.com](https://tscircuit.com) | Schematic tab in the playground |
+| `tsci dev` | Local development preview server |
+| Any React app | Embedded via the npm package |
+
+## GitHub
+
+- [github.com/tscircuit/schematic-viewer](https://github.com/tscircuit/schematic-viewer)
