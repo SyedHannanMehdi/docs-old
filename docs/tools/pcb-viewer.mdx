@@ -1,0 +1,74 @@
+---
+title: PCB Viewer
+description: Interactive PCB viewer for tscircuit layouts
+sidebar_position: 3
+---
+
+# PCB Viewer
+
+The **PCB Viewer** is an interactive, browser-based viewer for PCB layouts
+produced by tscircuit. It renders copper layers, pads, traces, silkscreen, and
+drill holes with pan/zoom support.
+
+It is embedded in:
+
+- [tscircuit.com](https://tscircuit.com) playground
+- The local `tsci dev` preview server (`localhost:3020`)
+- [Runframe](./runframe) — the embeddable playground component
+- Any React app that installs `@tscircuit/pcb-viewer`
+
+## Features
+
+- **Layer visibility toggle** — show/hide copper (F.Cu, B.Cu), silkscreen,
+  soldermask, and drill layers
+- **Pan & zoom** — mouse wheel / trackpad to zoom; click-and-drag to pan
+- **Coordinate readout** — double-click anywhere on the board to display the
+  cursor's `(x, y)` coordinates in millimetres
+- **Net highlighting** — hover over a pad or trace to highlight all connected
+  pads in the same net
+- **DRC markers** — design-rule-check errors are displayed as visual overlays
+
+## Embedding in a React App
+
+Install the package:
+
+```bash
+npm install @tscircuit/pcb-viewer
+```
+
+Use it in a component:
+
+```tsx
+import { PCBViewer } from "@tscircuit/pcb-viewer"
+import type { AnyCircuitElement } from "circuit-json"
+
+interface Props {
+  elements: AnyCircuitElement[]
+}
+
+export function MyPCBViewer({ elements }: Props) {
+  return (
+    <div style={{ width: "100%", height: 600 }}>
+      <PCBViewer soup={elements} />
+    </div>
+  )
+}
+```
+
+The `soup` prop accepts an array of **circuit JSON** elements — the output of
+`circuit.getCircuitJson()` from `@tscircuit/core`.
+
+## Reading Coordinates
+
+When setting the physical position of components with `pcb_x` and `pcb_y`
+props, you can find the right values by:
+
+1. Running `tsci dev`
+2. Opening the PCB tab
+3. Double-clicking on the desired board location
+
+The coordinates are displayed in the bottom status bar in millimetres.
+
+## Source
+
+[github.com/tscircuit/pcb-viewer](https://github.com/tscircuit/pcb-viewer)
