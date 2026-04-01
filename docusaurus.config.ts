@@ -1,6 +1,6 @@
-import { themes as prismThemes } from "prism-react-renderer"
-import type { Config } from "@docusaurus/types"
-import type * as Preset from "@docusaurus/preset-classic"
+import { themes as prismThemes } from "prism-react-renderer";
+import type { Config } from "@docusaurus/types";
+import type * as Preset from "@docusaurus/preset-classic";
 
 const config: Config = {
   title: "tscircuit docs",
@@ -9,8 +9,8 @@ const config: Config = {
   url: "https://your-docusaurus-site.example.com",
   baseUrl: "",
 
-  organizationName: "tsciuit",
-  projectName: "tscircuit",
+  organizationName: "tscircuit",
+  projectName: "docs-old",
 
   onBrokenLinks: "throw",
   onBrokenMarkdownLinks: "warn",
@@ -25,7 +25,7 @@ const config: Config = {
       "classic",
       {
         docs: {
-          id: "default", // Default docs instance
+          id: "default",
           path: "docs",
           routeBasePath: "docs",
           sidebarPath: "./sidebars.ts",
@@ -102,7 +102,7 @@ const config: Config = {
       items: [
         {
           type: "docSidebar",
-          sidebarId: "tutorialSidebar", // Matches the sidebar ID for "docs"
+          sidebarId: "tutorialSidebar",
           position: "left",
           label: "Documentation",
         },
@@ -195,6 +195,6 @@ const config: Config = {
       darkTheme: prismThemes.dracula,
     },
   } satisfies Preset.ThemeConfig,
-}
+};
 
-export default config
+export default config;
