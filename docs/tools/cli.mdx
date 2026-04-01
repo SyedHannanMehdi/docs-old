@@ -1,14 +1,12 @@
 ---
-title: CLI (tsci)
-description: Use the tscircuit command-line interface for local development and publishing
-sidebar_position: 2
+title: "CLI (tsci)"
+description: "The tscircuit command-line interface for local circuit development"
+sidebar_position: 3
 ---
 
-# CLI (`tsci`)
+# CLI — `tsci`
 
-The `tsci` command-line interface is the primary tool for developing tscircuit
-projects locally. It provides a live-preview dev server, project scaffolding,
-package management, and export utilities.
+The **tscircuit CLI** (`tsci`) is a command-line tool for developing, previewing, and publishing circuits from your local machine.
 
 ## Installation
 
@@ -16,29 +14,23 @@ package management, and export utilities.
 npm install -g tscircuit tsx
 ```
 
-The `tsx` package is a TypeScript runner required to execute `.tsx` circuit
-files on Node.js.
+After installation the `tsci` command is available globally. Run `tsci --help` to see all available commands.
 
-Verify the installation:
-
-```bash
-tsci --help
-```
-
-## Commands
+## Key Commands
 
 ### `tsci init`
 
-Scaffold a new circuit project in the current directory.
+Bootstraps a new tscircuit project in the current directory.
 
 ```bash
 mkdir my-circuit && cd my-circuit
 tsci init
 ```
 
-Generated project structure:
+Generated project layout:
 
 ```
+my-circuit/
 ├── README.md
 ├── examples/
 │   └── MyExample.tsx
@@ -51,33 +43,25 @@ Generated project structure:
 
 ### `tsci dev`
 
-Start the local development server with a live PCB and schematic preview.
+Starts a local development server with a live-reloading circuit preview.
 
 ```bash
 tsci dev
 ```
 
-Opens `http://localhost:3020` in your browser. Every file saved in the
-`examples/` directory is hot-reloaded automatically.
+Opens a browser window at `http://localhost:3020` showing a Schematic and PCB view. Every file inside the `examples/` directory is listed as a selectable example.
 
-:::tip
-Double-click anywhere inside the PCB Viewer to read the cursor coordinates —
-useful when setting `pcb_x` / `pcb_y` props.
-:::
+### `tsci build`
 
-### `tsci add`
-
-Install a component from the tscircuit registry into your project.
+Compiles your circuit and generates output files (Gerber, BOM, etc.) into a `dist/` folder.
 
 ```bash
-tsci add @tscircuit/battery @tscircuit/a555timer
+tsci build
 ```
-
-This fetches the package from the registry and adds it to `package.json`.
 
 ### `tsci publish`
 
-Publish your circuit to the tscircuit registry so others can install it.
+Publishes your circuit to the [tscircuit registry](https://tscircuit.com/trending) so others can import and use it.
 
 ```bash
 tsci publish
@@ -85,27 +69,18 @@ tsci publish
 
 You must be logged in (`tsci login`) before publishing.
 
-### `tsci export`
+### `tsci login`
 
-Export your circuit to various manufacturing or EDA formats.
+Authenticates your local machine with your tscircuit.com account.
 
 ```bash
-# Gerber files (zip) — upload to JLCPCB, PCBWay, MacroFab, etc.
-tsci export gerbers
-
-# KiCad project
-tsci export kicad
-
-# SVG render
-tsci export svg
+tsci login
 ```
 
-## Environment Variables
+## Configuration
 
-| Variable | Description |
-|----------|-------------|
-| `TSCIRCUIT_REGISTRY` | Override the registry URL (default: `https://registry.tscircuit.com`) |
+Project configuration lives in `package.json` under the `"tscircuit"` key (or a `tscircuit.config.ts` file for advanced setups). The `tsconfig.json` in your project is pre-configured to resolve tscircuit types.
 
-## Source
+## GitHub
 
-[github.com/tscircuit/cli](https://github.com/tscircuit/cli)
+- [github.com/tscircuit/cli](https://github.com/tscircuit/cli)
