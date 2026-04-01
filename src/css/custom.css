@@ -15,10 +15,9 @@
   --ifm-color-primary-lightest: #1ed4ff;
   --ifm-code-font-size: 95%;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
-
-  /* Constrain and center the overall page container like Bun docs */
   --ifm-container-width: 1280px;
   --ifm-container-width-xl: 1280px;
+  --ifm-spacing-horizontal: 1.5rem;
 }
 
 /* For readability concerns, you should choose a lighter palette in dark mode. */
@@ -46,6 +45,30 @@
 
 .header-github-link:hover::before {
   background-color: var(--ifm-navbar-link-hover-color);
+}
+
+/* Center the main content wrapper */
+.main-wrapper {
+  max-width: var(--ifm-container-width);
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* Ensure the docs page layout is centered */
+.docPage_node_modules-\@docusaurus-theme-classic-lib-theme-DocPage-Layout-styles-module {
+  max-width: var(--ifm-container-width);
+  margin: 0 auto;
+}
+
+/* Center docs layout */
+.docItemCol_node_modules-\@docusaurus-theme-classic-lib-theme-DocItem-Layout-styles-module {
+  max-width: 100%;
+}
+
+/* Ensure containers are centered */
+.container {
+  max-width: var(--ifm-container-width) !important;
+  margin: 0 auto !important;
 }
 
 .cardContainer {
@@ -97,30 +120,4 @@ figcaption {
   margin-top: 0.5em;
   text-align: center;
   color: #7b7b7b;
-}
-
-/* ============================================================
-   Centering: make docs layout behave like Bun docs
-   The overall wrapper should be max-width and centered.
-   ============================================================ */
-
-/* Center the top-level wrapper that wraps sidebar + content */
-.main-wrapper {
-  max-width: var(--ifm-container-width);
-  margin-left: auto !important;
-  margin-right: auto !important;
-  width: 100%;
-}
-
-/* Navbar inner container */
-.navbar__inner {
-  max-width: var(--ifm-container-width);
-  margin: 0 auto;
-}
-
-/* Footer inner container */
-.footer__links,
-.footer .container {
-  max-width: var(--ifm-container-width);
-  margin: 0 auto;
 }
