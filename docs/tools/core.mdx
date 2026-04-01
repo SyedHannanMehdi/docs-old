@@ -1,0 +1,88 @@
+---
+title: "Core (@tscircuit/core)"
+description: "The React-based circuit rendering engine that powers tscircuit"
+sidebar_position: 9
+---
+
+# Core — `@tscircuit/core`
+
+**`@tscircuit/core`** is the rendering engine at the heart of tscircuit. It takes your React circuit JSX, runs the layout and routing algorithms, and produces a **circuit JSON** (`soup`) that every other tool in the ecosystem consumes.
+
+## What It Does
+
+- Implements all built-in tscircuit components (`<resistor>`, `<capacitor>`, `<chip>`, `<board>`, `<trace>`, etc.)
+- Resolves schematic and PCB symbol/footprint placement
+- Runs constraint-based schematic auto-layout
+- Calls the autorouter to connect unrouted nets
+- Outputs a flat array of circuit JSON elements (the "soup")
+
+## Installation
+
+`@tscircuit/core` is included when you install the main `tscircuit` package:
+
+```bash
+npm install tscircuit
+```
+
+Or install it directly:
+
+```bash
+npm install @tscircuit/core
+```
+
+## Basic Usage
+
+```tsx
+import { renderToCircuitJson } from "@tscircuit/core"
+
+const circuitJson = await renderToCircuitJson(
+  <board width="20mm" height="20mm">
+    <resistor name="R1" resistance="10kohm" footprint="0402" />
+    <capacitor name="C1" capacitance="100nF" footprint="0402" />
+    <trace from=".R1 .pin2" to=".C1 .pin1" />
+  </board>
+)
+
+console.log(circuitJson) // Array of circuit JSON elements
+```
+
+## Relationship to Other Tools
+
+```
+Your TSX code
+     │
+     ▼
+@tscircuit/core   ← rendering engine
+     │
+     ▼
+Circuit JSON (soup)
+     │
+     ├──▶ PCB Viewer        (visual PCB preview)
+     ├──▶ Schematic Viewer  (visual schematic preview)
+     ├──▶ Autorouter        (trace routing)
+     └──▶ Converters        (Gerber, BOM, PnP, SVG…)
+```
+
+## Built-in Components
+
+| Component | Description |
+|-----------|-------------|
+| `<board>` | The PCB board outline and root container |
+| `<resistor>` | Resistor with schematic symbol and PCB footprint |
+| `<capacitor>` | Capacitor |
+| `<inductor>` | Inductor |
+| `<diode>` | Diode |
+| `<led>` | LED |
+| `<chip>` | Generic IC / multi-pin component |
+| `<jumper>` | Jumper / connector |
+| `<trace>` | Electrical connection between two pads |
+| `<net>` | Named net declaration |
+| `<via>` | PCB via |
+| `<silkscreen-text>` | Silkscreen label on the PCB |
+| `<hole>` | Mechanical drill hole |
+| `<smtpad>` | Custom SMT pad |
+| `<plated-hole>` | Plated through-hole |
+
+## GitHub
+
+- [github.com/tscircuit/core](https://github.com/tscircuit/core)
