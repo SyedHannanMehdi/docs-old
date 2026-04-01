@@ -1,24 +1,205 @@
 ---
-title: "Tools Overview"
-description: "A map of every user-facing tool in the tscircuit ecosystem"
-slug: /tools
+title: Tools Overview
+description: An overview of the user-facing tools in the tscircuit ecosystem
 sidebar_position: 1
 ---
 
 # tscircuit Tools Overview
 
-tscircuit ships a collection of tightly-integrated tools that take you from
-writing TypeScript circuit code all the way to manufacturing-ready Gerber files.
-This page gives you a bird's-eye view of each tool and when to reach for it.
+The tscircuit ecosystem includes a collection of tools that help you design,
+preview, route, convert, and share PCB circuits. Below is a high-level map of
+every user-facing tool and where it fits in the workflow.
 
-| Tool | Where to use it | What it does |
-|---|---|---|
-| [tscircuit.com / Runframe](./runframe) | Browser | Live preview, share & publish circuits |
-| [CLI (`tsci`)](./cli) | Terminal | Init, dev server, build & publish from the command line |
-| [PCB Viewer](./pcb-viewer) | Browser / embedded | Interactive PCB rendering and inspection |
-| [Autorouter (autorouting.com)](./autorouter) | Browser / API | Automatically route traces on a PCB |
-| [Format Converters](./format-converters) | CLI / API | Convert Circuit JSON to Gerber, KiCad, SVG, STEP & more |
-| [Core (`@tscircuit/core`)](./core) | npm package | React-based circuit rendering engine |
+| Tool | What it does | Where to find it |
+|------|-------------|------------------|
+| [tscircuit.com / Runframe](#runtscircuitcom--runframe) | Browser-based live preview & playground | [tscircuit.com](https://tscircuit.com) |
+| [CLI (`tsci`)](#cli-tsci) | Local project init, dev server, and publishing | `npm i -g tscircuit` |
+| [PCB Viewer](#pcb-viewer) | Interactive PCB render embedded everywhere | [github.com/tscircuit/pcb-viewer](https://github.com/tscircuit/pcb-viewer) |
+| [Autorouter / autorouting.com](#autorouterautoroutingcom) | Automatic trace routing for PCBs | [autorouting.com](https://autorouting.com) |
+| [Core (`@tscircuit/core`)](#core-tscircuitcore) | The React rendering engine for circuits | [github.com/tscircuit/core](https://github.com/tscircuit/core) |
+| [File Converters](#file-converters) | Export/import Gerber, KiCad, Eagle, CSV, SVG … | Various packages & CLI flags |
+| [Registry](#registry) | Publish and reuse circuit components | [tscircuit.com/trending](https://tscircuit.com/trending) |
 
-Pick the section that matches what you want to do, or start with the
-[Quickstart](/quickstart) if you are brand new to tscircuit.
+---
+
+## tscircuit.com / Runframe
+
+[tscircuit.com](https://tscircuit.com) is the fastest way to start building
+circuits — no installation needed. Click **New** in the top bar to open a blank
+snippet in your browser and start writing TSX immediately.
+
+**Runframe** ([github.com/tscircuit/runframe](https://github.com/tscircuit/runframe))
+is the open-source React component that powers the in-browser preview. It
+bundles a WebWorker-based TypeScript compiler, the tscircuit core renderer, and
+the PCB/schematic viewers into a single embeddable component.
+
+Key features:
+- Zero-install circuit authoring in the browser
+- Live schematic **and** PCB views side-by-side
+- Shareable snippet URLs
+- Embeddable in any React application via the `runframe` npm package
+
+---
+
+## CLI (`tsci`)
+
+The command-line interface is the primary tool for local development.
+
+```bash
+npm install -g tscircuit tsx
+```
+
+### Commands
+
+| Command | Description |
+|---------|-------------|
+| `tsci init` | Scaffold a new circuit project |
+| `tsci dev` | Start the local dev server with live PCB/schematic preview at `localhost:3020` |
+| `tsci build` | Build and bundle your circuit |
+| `tsci add <package>` | Install a component from the tscircuit registry |
+| `tsci publish` | Publish your circuit to the registry |
+| `tsci export gerbers` | Export Gerber files for manufacturing |
+| `tsci export kicad` | Export a KiCad project |
+
+Source: [github.com/tscircuit/cli](https://github.com/tscircuit/cli)
+
+---
+
+## PCB Viewer
+
+The **PCB Viewer**
+([github.com/tscircuit/pcb-viewer](https://github.com/tscircuit/pcb-viewer))
+is an interactive, WebGL-powered viewer for PCB layouts. It is embedded inside:
+
+- The tscircuit.com playground
+- The local `tsci dev` preview server
+- Runframe
+- Any third-party site that installs the `@tscircuit/pcb-viewer` React package
+
+### Features
+
+- Pan, zoom, and inspect individual pads and traces
+- Toggle layer visibility (copper, silkscreen, drill, etc.)
+- Double-click anywhere on the board to read the cursor coordinates — handy
+  when setting `pcb_x` / `pcb_y` props in code
+- Hover over a footprint to highlight its net connections
+
+### Embedding
+
+```tsx
+import { PCBViewer } from "@tscircuit/pcb-viewer"
+
+export default function App() {
+  return (
+    <PCBViewer soup={circuitJsonElements} />
+  )
+}
+```
+
+---
+
+## Autorouter / autorouting.com
+
+[autorouting.com](https://autorouting.com) hosts the tscircuit autorouting
+algorithms and lets you benchmark, visualise, and run them interactively.
+
+The autorouter is also used automatically when you call `tsci dev` or render
+your circuit — traces that do not have explicit `pcb_route_hints` are routed
+automatically.
+
+### How it works
+
+1. tscircuit core emits an unrouted circuit soup (JSON).
+2. The autorouter receives the soup, finds paths for every unconnected net, and
+   returns a fully-routed soup.
+3. The PCB Viewer renders the result.
+
+### Manual hints
+
+You can guide the autorouter with `pcb_route_hints`:
+
+```tsx
+<trace
+  from=".U1 > .VCC"
+  to=".C1 > .plus"
+  pcb_route_hints={[{ x: 5, y: 3, via: true }]}
+/>
+```
+
+Source: [github.com/tscircuit/autorouting](https://github.com/tscircuit/autorouting)
+
+---
+
+## Core (`@tscircuit/core`)
+
+`@tscircuit/core`
+([github.com/tscircuit/core](https://github.com/tscircuit/core)) is the React
+renderer that converts TSX circuit components into **circuit JSON** (also called
+"soup") — a framework-agnostic intermediate representation consumed by all other
+tools.
+
+### Responsibilities
+
+- Resolving React component trees into nets, footprints, and traces
+- Running the layout engine (schematic auto-placement)
+- Invoking the autorouter
+- Producing circuit JSON consumed by viewers and exporters
+
+### Usage
+
+You typically don't import core directly — it is used under the hood by
+`tsci dev`, Runframe, and the registry build pipeline. However, you can use it
+programmatically:
+
+```ts
+import { Circuit } from "@tscircuit/core"
+
+const circuit = new Circuit()
+circuit.add(
+  <board width="10mm" height="10mm">
+    <resistor name="R1" resistance="10kohm" footprint="0805" />
+  </board>
+)
+
+const soup = circuit.getCircuitJson()
+```
+
+---
+
+## File Converters
+
+tscircuit can import and export a variety of EDA formats. Converters are
+available as standalone npm packages and are also accessible via the
+`tsci export` commands and the **File → Export** menu in the playground.
+
+### Export formats
+
+| Format | Package / flag | Notes |
+|--------|---------------|-------|
+| **Gerber** (RS-274X) | `@tscircuit/gerber-builder` / `tsci export gerbers` | Upload to JLCPCB, PCBWay, MacroFab, etc. |
+| **KiCad** (`.kicad_pcb`) | `@tscircuit/kicad-converter` / `tsci export kicad` | Open in KiCad 6+ |
+| **SVG** | built-in | Schematic or PCB as a vector image |
+| **CSV BOM** | built-in | Bill of Materials for procurement |
+| **SPICE netlist** | `@tscircuit/spice-netlist-exporter` | Simulation in LTspice or ngspice |
+
+### Import formats
+
+| Format | Package | Notes |
+|--------|---------|-------|
+| **KiCad footprint** (`.kicad_mod`) | `@tscircuit/kicad-mod-converter` | Convert KiCad footprints to tscircuit components |
+| **Eagle schematic** | `@tscircuit/eagle-xml-importer` | Import Eagle XML netlists |
+
+---
+
+## Registry
+
+The **tscircuit registry** ([tscircuit.com/trending](https://tscircuit.com/trending))
+is an npm-compatible registry of reusable circuit components — chips, breakout
+boards, common passive networks, and more.
+
+- **Install** a component: `tsci add @tsci/tscircuit.a555timer`
+- **Publish** your own: `tsci publish` (or `npm publish` against the registry URL)
+- Every published snippet includes a live PCB/schematic preview
+- Components are versioned and can be pinned in `package.json`
+
+See the [Registry guide](/docs/get-started/registry) for more details.
