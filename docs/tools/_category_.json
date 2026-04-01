@@ -3,6 +3,6 @@
   "position": 3,
   "link": {
     "type": "generated-index",
-    "description": "An overview of the user-facing tools in the tscircuit ecosystem."
+    "description": "Explore the user-facing tools in the tscircuit ecosystem — from the browser-based PCB viewer to the CLI, autorouter, and format converters."
   }
 }
