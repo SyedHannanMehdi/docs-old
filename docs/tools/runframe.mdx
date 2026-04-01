@@ -1,76 +1,86 @@
 ---
-title: Runframe & tscircuit.com
-description: The browser-based tscircuit playground, snippet registry, and embedded circuit runner
+title: "Runframe & tscircuit.com"
+description: "Browser-based live preview and sharing platform for tscircuit circuits"
+sidebar_position: 2
 ---
+
+# Runframe & tscircuit.com
+
+[tscircuit.com](https://tscircuit.com) is the hosted platform built on top of
+**Runframe** — an open-source, browser-based circuit runner that evaluates
+your TypeScript/TSX circuit code entirely in the browser and renders an
+interactive schematic and PCB preview in real time.
 
 ## What is Runframe?
 
-**Runframe** ([GitHub](https://github.com/tscircuit/runframe)) is the React
-component that powers the live preview panel on
-[tscircuit.com](https://tscircuit.com) and in the local CLI dev server. It
-compiles your tscircuit JSX code in a web worker, renders the result, and
-displays interactive schematic, PCB, 3D, and Circuit JSON views — all in the
-browser with no build step.
+[`runframe`](https://github.com/tscircuit/runframe) is the open-source React
+component at the heart of tscircuit.com. It:
 
-Runframe is also published as a standalone npm package so you can embed the
-runner inside your own applications.
+- Compiles and evaluates TSX circuit code **inside a Web Worker** using an
+  in-browser TypeScript bundler, so nothing needs to be installed.
+- Renders the **schematic view** and **PCB view** side-by-side.
+- Shows build errors inline with a code editor.
+- Supports importing packages from the tscircuit registry on the fly.
 
-## tscircuit.com
+You can embed Runframe in your own app — see the
+[runframe GitHub repository](https://github.com/tscircuit/runframe) for
+installation and embedding instructions.
 
-[tscircuit.com](https://tscircuit.com) is the hosted version of Runframe. It
-gives you:
+## Using tscircuit.com
 
-- **Instant playground** — hit "New" in the top bar (no sign-up required) and
-  start writing circuit code immediately.
-- **Snippet registry** — browse, fork, and share circuits created by the
-  community.
-- **One-click export** — download Gerber, KiCad, BOM, or 3D model files
-  directly from the browser.
+### Create a snippet
 
-:::info
-The playground is the fastest way to try tscircuit. No local tooling required!
-:::
+1. Go to [tscircuit.com](https://tscircuit.com).
+2. Click **New** (no sign-up required for anonymous snippets).
+3. Write or paste your circuit TSX in the code editor on the left.
+4. The preview updates automatically as you type.
 
-## Using the Playground
+### Share a circuit
 
-1. Go to [tscircuit.com](https://tscircuit.com) and click **New** (top-right).
-2. Write or paste your circuit code in the editor on the left.
-3. The preview panel on the right updates in real time.
-4. Switch between **Schematic**, **PCB**, **3D**, and **JSON** tabs to inspect
-   the output.
-5. Click **Export** to download manufacturing files.
+Every snippet gets a unique URL. Share that URL with teammates or embed it in
+a pull request or issue.
 
-## Embedding Runframe in Your Own App
+### Publish to the registry
+
+Log in with GitHub, then click **Publish**. Your circuit becomes available on
+the [tscircuit registry](https://tscircuit.com/trending) so others can install
+it with:
+
+```bash
+tsci add @your-username/your-circuit
+```
+
+## Runframe Keyboard Shortcuts
+
+| Shortcut | Action |
+|---|---|
+| `Ctrl/Cmd + S` | Force re-run the circuit |
+| `Scroll` | Zoom in/out on the viewer |
+| `Click + drag` | Pan the viewer |
+
+## Embedding Runframe
 
 ```bash
 npm install @tscircuit/runframe
 ```
 
-```tsx
+```tsx title="App.tsx"
 import { RunFrame } from "@tscircuit/runframe"
 
-export default function MyApp() {
+export default function App() {
   return (
     <RunFrame
       code={`
-        export default () => (
-          <resistor name="R1" resistance="10kohm" footprint="0402" />
-        )
+export default () => (
+  <resistor name="R1" resistance="10kohm" footprint="0402" />
+)
       `}
-      defaultActiveTab="pcb"
     />
   )
 }
 ```
 
-The `<RunFrame />` component accepts the following key props:
+## Related tools
 
-| Prop | Type | Description |
-|---|---|---|
-| `code` | `string` | tscircuit JSX source to compile and render |
-| `defaultActiveTab` | `"schematic" \| "pcb" \| "3d" \| "json"` | Which view tab is active on mount |
-| `onRenderComplete` | `(circuitJson: any) => void` | Callback fired after a successful render |
-| `showExportButton` | `boolean` | Whether to show the export button |
-
-See the [Runframe GitHub repository](https://github.com/tscircuit/runframe) for
-the full prop reference and advanced configuration options.
+- [PCB Viewer](./pcb-viewer) — the viewer embedded inside Runframe
+- [Core](./core) — the rendering engine Runframe calls internally
