@@ -16,13 +16,9 @@
   --ifm-code-font-size: 95%;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
 
-  /* Constrain content width and center it, similar to Bun docs */
+  /* Constrain and center the overall page container like Bun docs */
   --ifm-container-width: 1280px;
   --ifm-container-width-xl: 1280px;
-  --ifm-spacing-horizontal: 1.5rem;
-
-  /* Constrain the doc article content to a readable width */
-  --ifm-content-max-width: 752px;
 }
 
 /* For readability concerns, you should choose a lighter palette in dark mode. */
@@ -103,38 +99,28 @@ figcaption {
   color: #7b7b7b;
 }
 
-/* Center the main doc layout wrapper */
+/* ============================================================
+   Centering: make docs layout behave like Bun docs
+   The overall wrapper should be max-width and centered.
+   ============================================================ */
+
+/* Center the top-level wrapper that wraps sidebar + content */
 .main-wrapper {
   max-width: var(--ifm-container-width);
-  margin: 0 auto;
+  margin-left: auto !important;
+  margin-right: auto !important;
   width: 100%;
 }
 
-/* Ensure the docs page container is properly centered */
-.docPage_node_modules-\@docusaurus-theme-classic-lib-theme-DocPage-Layout-styles-module {
+/* Navbar inner container */
+.navbar__inner {
   max-width: var(--ifm-container-width);
   margin: 0 auto;
 }
 
-/* Center and constrain the doc article content area */
-.docItemContainer_node_modules-\@docusaurus-theme-classic-lib-theme-DocItem-Layout-styles-module {
-  max-width: var(--ifm-content-max-width);
+/* Footer inner container */
+.footer__links,
+.footer .container {
+  max-width: var(--ifm-container-width);
   margin: 0 auto;
-}
-
-/* Constrain article content width for better readability */
-article.markdown {
-  max-width: var(--ifm-content-max-width);
-}
-
-/* Ensure the doc main column is properly constrained */
-.docMainContainer_node_modules-\@docusaurus-theme-classic-lib-theme-DocPage-Layout-Main-styles-module {
-  max-width: none;
-}
-
-/* Target the theme's container class for doc pages */
-.container {
-  max-width: var(--ifm-container-width) !important;
-  margin: 0 auto;
-  padding: 0 var(--ifm-spacing-horizontal);
 }
