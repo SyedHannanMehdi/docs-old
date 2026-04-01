@@ -1,74 +1,60 @@
 ---
-title: PCB Viewer
-description: Interactive PCB viewer for tscircuit layouts
-sidebar_position: 3
+title: "PCB Viewer"
+description: "An interactive React component for visualizing PCB layouts"
+sidebar_position: 4
 ---
 
 # PCB Viewer
 
-The **PCB Viewer** is an interactive, browser-based viewer for PCB layouts
-produced by tscircuit. It renders copper layers, pads, traces, silkscreen, and
-drill holes with pan/zoom support.
-
-It is embedded in:
-
-- [tscircuit.com](https://tscircuit.com) playground
-- The local `tsci dev` preview server (`localhost:3020`)
-- [Runframe](./runframe) — the embeddable playground component
-- Any React app that installs `@tscircuit/pcb-viewer`
+The **PCB Viewer** is an interactive React component that renders a PCB layout from tscircuit's internal circuit JSON (`soup`) format. It is used inside the tscircuit playground and the local `tsci dev` preview server.
 
 ## Features
 
-- **Layer visibility toggle** — show/hide copper (F.Cu, B.Cu), silkscreen,
-  soldermask, and drill layers
-- **Pan & zoom** — mouse wheel / trackpad to zoom; click-and-drag to pan
-- **Coordinate readout** — double-click anywhere on the board to display the
-  cursor's `(x, y)` coordinates in millimetres
-- **Net highlighting** — hover over a pad or trace to highlight all connected
-  pads in the same net
-- **DRC markers** — design-rule-check errors are displayed as visual overlays
+- Renders copper traces, pads, vias, silkscreen, board outline, and drill holes
+- Pan and zoom with mouse/touch
+- Hover over components to inspect properties
+- Toggle individual PCB layers on/off
+- Highlights rats-nest (unrouted connections)
 
-## Embedding in a React App
-
-Install the package:
+## Installation
 
 ```bash
 npm install @tscircuit/pcb-viewer
 ```
 
-Use it in a component:
+## Usage
 
 ```tsx
 import { PCBViewer } from "@tscircuit/pcb-viewer"
-import type { AnyCircuitElement } from "circuit-json"
 
-interface Props {
-  elements: AnyCircuitElement[]
-}
+export default function App() {
+  const circuitJson = [/* your circuit JSON soup */]
 
-export function MyPCBViewer({ elements }: Props) {
   return (
-    <div style={{ width: "100%", height: 600 }}>
-      <PCBViewer soup={elements} />
+    <div style={{ width: 800, height: 600 }}>
+      <PCBViewer circuitJson={circuitJson} />
     </div>
   )
 }
 ```
 
-The `soup` prop accepts an array of **circuit JSON** elements — the output of
-`circuit.getCircuitJson()` from `@tscircuit/core`.
+### Props
 
-## Reading Coordinates
+| Prop | Type | Description |
+|------|------|-------------|
+| `circuitJson` | `AnySoupElement[]` | The circuit JSON (soup) to render |
+| `height` | `number` | Optional height override in pixels |
+| `initialState` | `object` | Optional initial pan/zoom/layer state |
+| `onHoverElement` | `(el) => void` | Callback when the user hovers over an element |
 
-When setting the physical position of components with `pcb_x` and `pcb_y`
-props, you can find the right values by:
+## Where It's Used
 
-1. Running `tsci dev`
-2. Opening the PCB tab
-3. Double-clicking on the desired board location
+| Context | How |
+|---------|-----|
+| [tscircuit.com](https://tscircuit.com) | PCB tab in the playground |
+| `tsci dev` | Local development preview server |
+| Any React app | Embedded via the npm package |
 
-The coordinates are displayed in the bottom status bar in millimetres.
+## GitHub
 
-## Source
-
-[github.com/tscircuit/pcb-viewer](https://github.com/tscircuit/pcb-viewer)
+- [github.com/tscircuit/pcb-viewer](https://github.com/tscircuit/pcb-viewer)
