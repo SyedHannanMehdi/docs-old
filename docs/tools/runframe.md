@@ -1,73 +1,76 @@
+---
+title: "Runframe (tscircuit.com)"
+description: "Browser-based circuit editor and live preview environment"
+sidebar_position: 2
+---
+
 # Runframe
 
-**Runframe** is a browser-based circuit runner and live-preview environment for tscircuit. It lets you write, run, and inspect tscircuit code entirely in the browser — no local installation required.
+**Repository:** [github.com/tscircuit/runframe](https://github.com/tscircuit/runframe)  
+**Live site:** [tscircuit.com](https://tscircuit.com)
 
-## Access
+## What is Runframe?
 
-👉 [runframe.tscircuit.com](https://runframe.tscircuit.com)
+Runframe is the browser-based tscircuit execution environment. It compiles and
+runs tscircuit TypeScript/React code entirely in your browser using a Web Worker,
+then renders an interactive schematic and PCB preview — no install required.
 
-Runframe is also embedded in [tscircuit.com](https://tscircuit.com) snippets and can be self-hosted or embedded in your own React application.
+Runframe is embedded in [tscircuit.com](https://tscircuit.com) and is also the
+UI shown when you run `tsci dev` locally.
 
-## What Runframe Does
+## Key features
 
-Runframe executes tscircuit code **inside a web worker** so the main thread stays responsive. It then renders the resulting circuit JSON through the [PCB Viewer](./pcb-viewer.md) and schematic viewer — giving you instant visual feedback as you type.
+- **Zero-install playground** — open [tscircuit.com](https://tscircuit.com), hit
+  **New**, and start typing circuit code instantly.
+- **Split-pane editor** — code on the left, live schematic/PCB preview on the
+  right, with real-time updates as you type.
+- **Tabbed views** — switch between Schematic, PCB, 3D, Bill of Materials (BOM),
+  and Circuit JSON with a single click.
+- **Error overlay** — compile-time and runtime errors are shown inline next to
+  the offending line.
+- **Shareable snippets** — every snippet on tscircuit.com gets a permanent URL
+  you can share or embed.
+- **Embeddable** — the `runframe` package can be dropped into any React app to
+  provide an in-browser tscircuit REPL.
 
-### Key Features
+## Who is it for?
 
-| Feature | Description |
-|---------|-------------|
-| **Live preview** | PCB and schematic update on every code change |
-| **Error panel** | Compile and DRC errors shown inline |
-| **Multiple view tabs** | PCB, Schematic, 3D, and raw circuit JSON (soup) |
-| **Import from registry** | Use `@tsci/` packages directly in the browser |
-| **Share via URL** | Generated code can be shared as a permalink |
-| **Embed anywhere** | Drop into any React app with the npm package |
+- **Beginners** who want to try tscircuit without any setup.
+- **Teams** who want to review or share circuit snippets via a link.
+- **Library authors** who want to publish interactive examples alongside their
+  components on the tscircuit registry.
 
-## Using the Runframe React Component
+## Getting started
+
+1. Go to [tscircuit.com](https://tscircuit.com).
+2. Click **New** in the top navigation.
+3. Type or paste your tscircuit code in the left panel.
+4. The PCB and schematic preview updates automatically.
+
+## Embedding Runframe in your own app
 
 ```bash
 npm install @tscircuit/runframe
 ```
 
 ```tsx
-import { RunFrame } from "@tscircuit/runframe"
+import { RunframeForCli } from "@tscircuit/runframe"
 
-export default function Playground() {
+export default function App() {
   return (
-    <RunFrame
-      defaultCode={`
-import { resistor, led } from "@tscircuit/core"
-
+    <RunframeForCli
+      initialCode={`
 export default () => (
-  <board width="10mm" height="10mm">
-    <resistor resistance="1k" footprint="0402" name="R1" />
-    <led color="red" footprint="0402" name="LED1" />
-  </board>
+  <resistor name="R1" resistance="10kohm" footprint="0402" />
 )
-      `.trim()}
-      style={{ width: "100%", height: "80vh" }}
+`}
     />
   )
 }
 ```
 
-### Props
+## Related tools
 
-| Prop | Type | Description |
-|------|------|-------------|
-| `defaultCode` | `string` | Initial TypeScript/TSX code to load |
-| `code` | `string` | Controlled code value |
-| `onCodeChange` | `(code: string) => void` | Called when user edits code |
-| `style` | `React.CSSProperties` | Container style |
-| `showCodeEditor` | `boolean` | Show/hide the code editor pane (default `true`) |
-
-## How It Works Internally
-
-1. User code is bundled in a **web worker** using an in-browser bundler.
-2. The bundled module is executed; the default export (a React component) is rendered by tscircuit/core to produce **circuit JSON**.
-3. The circuit JSON is passed to the PCB Viewer and schematic viewer components.
-4. DRC checks run against the circuit JSON and surface errors.
-
-## GitHub / Repository
-
-[github.com/tscircuit/runframe](https://github.com/tscircuit/runframe)
+- [CLI](./cli) — uses Runframe as its local preview window.
+- [PCB Viewer](./pcb-viewer) — the PCB tab inside Runframe is powered by
+  `@tscircuit/pcb-viewer`.
